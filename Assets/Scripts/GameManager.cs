@@ -8,7 +8,18 @@ public class GameManager : NetworkBehaviour
     public override void OnStartServer()
     {
         base.OnStartServer();
-        GameObject ball = Instantiate(ballPrefab);
-        ServerManager.Spawn(ball);
+        SpawnBall();
+    }
+
+    private void SpawnBall()
+    {
+        if (ballPrefab == null)
+        {
+            Debug.LogError("Error: Ball prefab is not assigned.");
+            return;
+        }
+
+        GameObject spawnedBall = Instantiate(ballPrefab, new Vector3(0, Court.BallY, 0), Quaternion.identity);
+        ServerManager.Spawn(spawnedBall);
     }
 }

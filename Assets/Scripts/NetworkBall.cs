@@ -16,7 +16,7 @@ public class NetworkBall : NetworkBehaviour
 
     private void Update()
     {
-        if (!base.IsServer) return;
+        if (!base.IsServerInitialized) return;
 
         if (_velocity == Vector3.zero)
         {
