@@ -90,7 +90,6 @@ public class PaddleController : NetworkBehaviour
     private void Update()
     {
         if (!base.IsOwner) return;
-        if (!Application.isFocused) return;
 
         Keyboard kb = Keyboard.current;
         if (kb == null) return;
