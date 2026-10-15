@@ -1,5 +1,6 @@
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using FishNet.Connection;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
@@ -98,7 +99,38 @@ public class PaddleController : NetworkBehaviour
         if (kb.wKey.isPressed || kb.upArrowKey.isPressed) dir += 1f;
         if (kb.sKey.isPressed || kb.downArrowKey.isPressed) dir -= 1f;
 
+        if (kb.spaceKey.wasPressedThisFrame)
+        {
+            RequestServe();
+        }
+
         transform.position += Vector3.forward * dir * speed * Time.deltaTime;
         Court.ClampPaddle(transform);
+    }
+
+    [ServerRpc]
+    private void RequestServe()
+    {
+        GameState gs = FindObjectOfType<GameState>();
+        NetworkBall nb = FindObjectOfType<NetworkBall>();
+
+        if (gs == null || nb == null) return;
+
+        if (Side.Value == gs.ServingSide.Value && !nb.InPlay.Value)
+        {
+            nb.Serve(1 - Side.Value);
+        }
+    }
+
+    [ObserversRpc]
+    public void AnnounceGoal(int left, int right)
+    {
+        Debug.Log($"Goal! {left} : {right}");
+    }
+
+    [TargetRpc]
+    public void YouServe(NetworkConnection target)
+    {
+        Debug.Log("YOU SERVE");
     }
 }

@@ -27,5 +27,17 @@ public class GameState : NetworkBehaviour
         else RightScore.Value++;
 
         ServingSide.Value = 1 - scorerSide;
+
+        PaddleController scorer = null;
+        PaddleController conceder = null;
+
+        foreach (PaddleController p in PaddleController.All)
+        {
+            if (p.Side.Value == scorerSide) scorer = p;
+            else if (p.Side.Value == 1 - scorerSide) conceder = p;
+        }
+
+        if (scorer != null) scorer.AnnounceGoal(LeftScore.Value, RightScore.Value);
+        if (conceder != null) conceder.YouServe(conceder.Owner);
     }
 }

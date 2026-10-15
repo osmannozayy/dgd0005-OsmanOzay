@@ -647,6 +647,7 @@ GameObject:
   - component: {fileID: 867933224}
   - component: {fileID: 867933227}
   - component: {fileID: 867933226}
+  - component: {fileID: 867933228}
   m_Layer: 0
   m_Name: Court_Manager
   m_TagString: Untagged
@@ -755,6 +756,21 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     Scale: {x: 0, y: 0, z: 0}
     IsValid: 0
+--- !u!114 &867933228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867933223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc4ad9a91793ce42a42172f7687793d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameState
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 867933227}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &1368014897
 GameObject:
   m_ObjectHideFlags: 0

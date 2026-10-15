@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class NetworkBall : NetworkBehaviour
 {
+    public static NetworkBall Instance;
     public readonly SyncVar<bool> InPlay = new SyncVar<bool>();
     private Vector3 velocity;
 
     private void Awake()
     {
+        Instance = this;
         InPlay.OnChange += OnPlayChanged;
     }
 
@@ -64,11 +66,13 @@ public class NetworkBall : NetworkBehaviour
         {
             GameState.Instance.Goal(0);
             ResetBall();
+            return;
         }
         else if (pos.x < -Court.HalfWidth)
         {
             GameState.Instance.Goal(1);
             ResetBall();
+            return;
         }
 
         transform.position = pos;
