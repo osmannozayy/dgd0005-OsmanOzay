@@ -784,6 +784,8 @@ GameObject:
   - component: {fileID: 1368014900}
   - component: {fileID: 1368014903}
   - component: {fileID: 1368014904}
+  - component: {fileID: 1368014905}
+  - component: {fileID: 1368014906}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -866,6 +868,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NetworkClientBootstrap
   serverAddress: 127.0.0.1
   port: 7770
+--- !u!114 &1368014905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368014897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756c28cd3141c4140ae776188ee26729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FishNet.Runtime::FishNet.Managing.Statistic.StatisticsManager
+  _runInRelease: 0
+  _networkTraffic:
+    _enableMode: 1
+    _updateClient: 1
+    _updateServer: 1
+--- !u!114 &1368014906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368014897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fdaae44044276a49a52229c1597e33b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FishNet.Runtime::FishNet.Managing.Timing.TimeManager
+  _updateOrder: 0
+  _timingType: 0
+  _allowTickDropping: 1
+  _maximumFrameTicks: 3
+  _tickRate: 30
+  _pingInterval: 1
+  _physicsMode: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
