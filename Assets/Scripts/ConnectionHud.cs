@@ -8,6 +8,11 @@ public class ConnectionHud : MonoBehaviour
     private static string flashMessage = "";
     private static float flashTime = 0f;
 
+    private void Awake()
+    {
+        Panels.Clear();
+    }
+
     public static void Flash(string message)
     {
         flashMessage = message;
@@ -16,7 +21,7 @@ public class ConnectionHud : MonoBehaviour
 
     private void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(10, 10, 400, 600));
+        GUILayout.BeginArea(new Rect(10, 100, 400, 600));
 
         GUIStyle style = new GUIStyle(GUI.skin.label);
         style.fontSize = 24;
