@@ -1,70 +1,83 @@
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
 
 public class NetworkBall : NetworkBehaviour
 {
-    [SerializeField] private float speed = 7f;
-    private Vector3 velocityDir;
-    private int leftScore, rightScore;
-    private float serveTime;
+    public readonly SyncVar<bool> InPlay = new SyncVar<bool>();
+    private Vector3 velocity;
 
-    public override void OnStartServer()
+    private void Awake()
     {
-        base.OnStartServer();
-        ResetBall(1);
+        InPlay.OnChange += OnPlayChanged;
+    }
+
+    private void OnPlayChanged(bool prev, bool next, bool asServer)
+    {
+        MeshRenderer mr = GetComponent<MeshRenderer>();
+        if (mr != null)
+            mr.material.color = next ? Color.white : Color.gray;
+    }
+
+    public void Serve(int towardSide)
+    {
+        if (!base.IsServerInitialized) return;
+
+        InPlay.Value = true;
+        float vx = towardSide == 0 ? -5f : 5f;
+        velocity = new Vector3(vx, 0, Random.Range(-2f, 2f));
     }
 
     private void Update()
     {
         if (!base.IsServerInitialized) return;
+        if (!InPlay.Value) return;
 
-        if (velocityDir == Vector3.zero)
+        Vector3 pos = transform.position;
+        pos += velocity * Time.deltaTime;
+
+        if (pos.z > Court.HalfHeight - Court.BallRadius)
         {
-            if (Time.time >= serveTime) ServeBall();
-            return;
+            pos.z = Court.HalfHeight - Court.BallRadius;
+            velocity.z = -velocity.z;
+        }
+        else if (pos.z < -Court.HalfHeight + Court.BallRadius)
+        {
+            pos.z = -Court.HalfHeight + Court.BallRadius;
+            velocity.z = -velocity.z;
         }
 
-        Vector3 pos = transform.position + velocityDir * Time.deltaTime;
-
-        float zLimit = Court.HalfHeight - Court.BallRadius;
-        if (Mathf.Abs(pos.z) > zLimit)
+        foreach (PaddleController p in PaddleController.All)
         {
-            pos.z = Mathf.Sign(pos.z) * zLimit;
-            velocityDir.z = -velocityDir.z;
-        }
+            if (p.Side.Value == 2) continue;
 
-        foreach (PaddleController paddle in Object.FindObjectsByType<PaddleController>(FindObjectsSortMode.None))
-        {
-            Vector3 paddlePos = paddle.transform.position;
-            bool isTowards = (paddlePos.x < 0 && velocityDir.x < 0) || (paddlePos.x > 0 && velocityDir.x > 0);
-            if (!isTowards) continue;
-
-            if (Mathf.Abs(pos.x - paddlePos.x) < 0.5f && Mathf.Abs(pos.z - paddlePos.z) < Court.PaddleHalfLength + Court.BallRadius)
+            if (Mathf.Abs(pos.x - p.transform.position.x) < Court.BallRadius + 0.5f &&
+                Mathf.Abs(pos.z - p.transform.position.z) < Court.BallRadius + Court.PaddleHalfLength)
             {
-                velocityDir.x = -velocityDir.x;
-                velocityDir.z += (pos.z - paddlePos.z) * 3f;
-                velocityDir = velocityDir.normalized * speed;
-                pos.x = paddlePos.x + (paddlePos.x < 0 ? 0.5f : -0.5f);
+                velocity.x = -velocity.x;
+                pos.x = p.transform.position.x + (pos.x > p.transform.position.x ? 1 : -1) * (Court.BallRadius + 0.5f);
+                break;
             }
         }
 
+        if (pos.x > Court.HalfWidth)
+        {
+            GameState.Instance.Goal(0);
+            ResetBall();
+        }
+        else if (pos.x < -Court.HalfWidth)
+        {
+            GameState.Instance.Goal(1);
+            ResetBall();
+        }
+
         transform.position = pos;
-
-        if (pos.x < -Court.HalfWidth - 0.5f) { rightScore++; ResetBall(0); }
-        else if (pos.x > Court.HalfWidth + 0.5f) { leftScore++; ResetBall(1); }
     }
 
-    private void ResetBall(int towards)
+    private void ResetBall()
     {
+        InPlay.Value = false;
         transform.position = new Vector3(0, Court.BallY, 0);
-        velocityDir = Vector3.zero;
-        serveTime = Time.time + 1f;
-    }
-
-    private void ServeBall()
-    {
-        float dx = Random.value > 0.5f ? -1f : 1f;
-        float dz = Random.Range(-0.6f, 0.6f);
-        velocityDir = new Vector3(dx, 0, dz).normalized * speed;
+        velocity = Vector3.zero;
     }
 }
