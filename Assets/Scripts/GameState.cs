@@ -10,6 +10,8 @@ public class GameState : NetworkBehaviour
     public readonly SyncVar<int> RightScore = new SyncVar<int>();
     public readonly SyncVar<int> ServingSide = new SyncVar<int>(0);
 
+    public readonly SyncList<string> Feed = new SyncList<string>();
+
     private void Awake()
     {
         Instance = this;
@@ -17,6 +19,15 @@ public class GameState : NetworkBehaviour
 
     private void Start()
     {
+        ConnectionHud.Panels.Add(() =>
+        {
+            string text = $"LEFT {LeftScore.Value} : {RightScore.Value} RIGHT\nServe: {ServingSide.Value}\n---\n";
+            foreach (string line in Feed)
+            {
+                text += line + "\n";
+            }
+            return text;
+        });
     }
 
     public void Goal(int scorerSide)
@@ -27,6 +38,8 @@ public class GameState : NetworkBehaviour
         else RightScore.Value++;
 
         ServingSide.Value = 1 - scorerSide;
+
+        Announce($"Goal! Side {scorerSide} scored.");
 
         PaddleController scorer = null;
         PaddleController conceder = null;
@@ -39,5 +52,16 @@ public class GameState : NetworkBehaviour
 
         if (scorer != null) scorer.AnnounceGoal(LeftScore.Value, RightScore.Value);
         if (conceder != null) conceder.YouServe(conceder.Owner);
+    }
+
+    public static void Announce(string line)
+    {
+        if (Instance == null || !Instance.IsServerInitialized) return;
+
+        Instance.Feed.Add(line);
+        if (Instance.Feed.Count > 6)
+        {
+            Instance.Feed.RemoveAt(0);
+        }
     }
 }

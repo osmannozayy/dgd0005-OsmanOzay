@@ -40,12 +40,16 @@ public class PaddleController : NetworkBehaviour
         else if (!rightTaken) assignedSide = 1;
 
         Side.Value = assignedSide;
+
+        GameState.Announce($"Player joined Side {assignedSide}");
     }
 
     public override void OnStopServer()
     {
         base.OnStopServer();
         All.Remove(this);
+
+        GameState.Announce($"Player left Side {Side.Value}");
     }
 
     public override void OnStartClient()

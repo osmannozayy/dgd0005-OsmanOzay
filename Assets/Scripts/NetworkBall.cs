@@ -28,6 +28,8 @@ public class NetworkBall : NetworkBehaviour
         InPlay.Value = true;
         float vx = towardSide == 0 ? -5f : 5f;
         velocity = new Vector3(vx, 0, Random.Range(-2f, 2f));
+
+        GameState.Announce($"Serve towards Side {towardSide}");
     }
 
     private void Update()
