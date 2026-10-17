@@ -79,9 +79,9 @@ Osman Özay - 2400004965
 
 | :--- | :--- | :--- | :--- | :--- | :--- |
 
-| \*\*I host, partner joins\*\* | 192.168.43.112 | 0 / LEFT | 1 / RIGHT | \~24 ms | Yes |
+| \*\*I host, partner joins\*\* | 192.168.43.112 | 0 / LEFT | 1 / RIGHT | \~26 ms | Yes |
 
-| \*\*Partner hosts, I join\*\* | 192.168.43.85 | 1 / RIGHT | 0 / LEFT | \~28 ms | Yes |
+| \*\*Partner hosts, I join\*\* | 192.168.43.85 | 1 / RIGHT | 0 / LEFT | \~30 ms | Yes |
 
 
 
