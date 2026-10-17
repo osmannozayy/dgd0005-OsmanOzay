@@ -1,15 +1,17 @@
-### Step 10
+Pong
 
-|TICK RATE|SERVER OUT B/S (RALLY)|BALL IN A CLIENT WINDOW|OTHER PADDLE|
-|-|-|-|-|
-|10|\~ 1200 B/s|Choppy and teleporting|Stuttering and delayed|
-|30|\~ 3500 B/s|Normal|Normal|
-|60|\~ 7000 B/s|Very smooth|Very smooth|
+Osman Özay - 2400004965
 
-* What did 60 cost?
-It cost significantly more bandwidth (higher Server Out B/s) to send updates more frequently.
-* What did it buy?
-It bought much smoother visual movement for the ball and the other player's paddle.
-* Why did the ball step even for the player moving a paddle?
-Because the ball's movement is completely controlled by the server (Server Authoritative), so the client must wait for the server's position updates to render the ball.
+Each player owns one paddle. The ball has no client owner and only the server moves it. Everyone shares the score, whose serve it is and the last six events. A third client joins as a spectator.
 
+Unity 6000.3.2f1, FishNet 4.7.3R, Multiplayer Play Mode 2.0.2.
+
+Run
+
+Open Assets/Scenes/Pong.unity in Unity 6000.3.2f1, use 30 Hz and press Play. Start Server on the hosting computer.
+
+Start Client on the hosting computer using 127.0.0.1.
+
+On the other computer, use the server's IPv4 address and Start Client (both on same hotspot, UDP 7770). Move with W/S or arrow keys, Space to serve.
+
+Week 3 answers and tests
