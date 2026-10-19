@@ -126,6 +126,28 @@ public class PaddleController : NetworkBehaviour
         {
             RequestServe();
         }
+
+        if (kb.cKey.wasPressedThisFrame)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                ServerSetAxis(1f);
+            }
+        }
+
+        if (kb.xKey.wasPressedThisFrame)
+        {
+            ServerSetAxis(50f);
+        }
+
+        if (kb.tKey.wasPressedThisFrame)
+        {
+            NetworkBall nb = FindObjectOfType<NetworkBall>();
+            if (nb != null)
+            {
+                transform.position = nb.transform.position;
+            }
+        }
     }
 
     private void OnTick()
