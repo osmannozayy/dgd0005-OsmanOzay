@@ -146,7 +146,7 @@ MonoBehaviour:
   _initializeOrder: 0
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
-  _initializedTimestamp: -8584091787322769033
+  _initializedTimestamp: -8584091784169215139
   _localLevelOfDetailCalculationType: 0
   _useLevelOfDetail: 0
   _useRootLevelOfDetail: 1

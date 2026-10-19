@@ -13,9 +13,26 @@ public class PaddleController : NetworkBehaviour
     public static List<PaddleController> All = new List<PaddleController>();
     public static PaddleController Local;
 
+    private float _serverAxis;
+
     private void Awake()
     {
         Side.OnChange += OnSideChanged;
+    }
+
+    public override void OnStartNetwork()
+    {
+        base.OnStartNetwork();
+        TimeManager.OnTick += OnTick;
+    }
+
+    public override void OnStopNetwork()
+    {
+        base.OnStopNetwork();
+        if (TimeManager != null)
+        {
+            TimeManager.OnTick -= OnTick;
+        }
     }
 
     public override void OnStartServer()
@@ -99,17 +116,37 @@ public class PaddleController : NetworkBehaviour
         Keyboard kb = Keyboard.current;
         if (kb == null) return;
 
-        float dir = 0f;
-        if (kb.wKey.isPressed || kb.upArrowKey.isPressed) dir += 1f;
-        if (kb.sKey.isPressed || kb.downArrowKey.isPressed) dir -= 1f;
-
         if (kb.spaceKey.wasPressedThisFrame)
         {
             RequestServe();
         }
+    }
 
-        transform.position += Vector3.forward * dir * speed * Time.deltaTime;
-        Court.ClampPaddle(transform);
+    private void OnTick()
+    {
+        if (base.IsOwner && Side.Value != 2)
+        {
+            Keyboard kb = Keyboard.current;
+            float axis = 0f;
+            if (kb != null)
+            {
+                if (kb.wKey.isPressed || kb.upArrowKey.isPressed) axis += 1f;
+                if (kb.sKey.isPressed || kb.downArrowKey.isPressed) axis -= 1f;
+            }
+            ServerSetAxis(axis);
+        }
+
+        if (base.IsServerInitialized)
+        {
+            transform.position += Vector3.forward * _serverAxis * speed * (float)TimeManager.TickDelta;
+            Court.ClampPaddle(transform);
+        }
+    }
+
+    [ServerRpc]
+    private void ServerSetAxis(float axis)
+    {
+        _serverAxis = axis;
     }
 
     [ServerRpc]
