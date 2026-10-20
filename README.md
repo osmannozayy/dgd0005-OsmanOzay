@@ -8,11 +8,11 @@ Unity 6000.3.2f1, FishNet 4.7.3R, Multiplayer Play Mode 2.0.2.
 
 Run
 
-Open Assets/Scenes/Pong.unity in Unity 6000.3.2f1, use 30 Hz and press Play. Start Server on the hosting computer.
+1-Open Assets/Scenes/Pong.unity in Unity 6000.3.2f1, use 30 Hz and press Play. Start Server on the hosting computer.
 
-Start Client on the hosting computer using 127.0.0.1.
+2-Start Client on the hosting computer using 127.0.0.1.
 
-On the other computer, use the server's IPv4 address and Start Client (both on same hotspot, UDP 7770). Move with W/S or arrow keys, Space to serve.
+3-On the other computer, use the server's IPv4 address and Start Client (both on same hotspot, UDP 7770). Move with W/S or arrow keys, Space to serve.
 
 [Week 3 answers and tests](Week03/README.md)
 [Week 4 answers and tests](Week04/README.md)
