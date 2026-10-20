@@ -15,3 +15,4 @@ Start Client on the hosting computer using 127.0.0.1.
 On the other computer, use the server's IPv4 address and Start Client (both on same hotspot, UDP 7770). Move with W/S or arrow keys, Space to serve.
 
 [Week 3 answers and tests](Week03/README.md)
+[Week 4 answers and tests](Week04/README.md)
